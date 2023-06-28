@@ -6,7 +6,7 @@ class Parameters:
         self.day=[1]
 
         self.TestSystem='Nodes_33'
-        self.TestSystemLines='Lines_33_config1'
+        self.TestSystemLines='Lines_33'
         
         self.TimeSeriesScenario=['sc1']
         self.P_profiles=[]
