@@ -63,26 +63,7 @@ def PowerFlowCalculation(Param):
 
             Vmg.append(np.array([[output_data['node'][iT][ibus][2] for ibus in range(Param.nLoad)] for iT in range(Param.nTime)]))
 
-    elif Param.PowerFlowMethod in ('tensor', 'hp' , 'sequential' ,'hp-tensor'):
-        if len(Param.P_profiles)*Param.nTime>960000:
-            claster=1000
-            uotient, remainder = divmod(len(Param.P_profiles),claster)
-            print(uotient, remainder)
-            Vmg=[]
-            for i in range(1,uotient+1):
-                print(i)
-                solutions = Param.network.run_pf(active_power=np.array(Param.P_profiles[-1+(i*claster-(claster-1)):i*claster-1]),
-                        reactive_power=np.array(Param.Q_profiles[-1+(i*claster-(claster-1)):i*claster-1]),algorithm=Param.PowerFlowMethod)
-                Vmg.append(abs(solutions["v"]))
-            if remainder>0:
-                print('last')
-                solutions = Param.network.run_pf(active_power=np.array(Param.P_profiles[-1+(uotient*claster-(claster-1)):len(Param.P_profiles)]),
-                        reactive_power=np.array(Param.Q_profiles[-1+(uotient*claster-(claster-1)):len(Param.P_profiles)]),algorithm=Param.PowerFlowMethod)
-                Vmg.append(abs(solutions["v"]))
-        else:
-            solutions = Param.network.run_pf(active_power=np.array(Param.P_profiles),
-                        reactive_power=np.array(Param.Q_profiles),algorithm=Param.PowerFlowMethod)
-            Vmg=abs(solutions["v"])
+    
     else:
         print('PowerFlowMethod is not defined')
         Vmg=0

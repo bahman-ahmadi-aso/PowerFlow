@@ -5,7 +5,6 @@
 
 note: you need the following libraries to run the code
 using Alliander power flow methods >> power_grid_model
-Tensor power flow methods >> tensorpowerflow
 Other power flow methods >> pandapower
 """
 #########################
@@ -23,7 +22,7 @@ Config_scenario=['config1','config2']
 
 for sc in Config_scenario:
 	##chose the power flow method
-	Param.PowerFlowMethod='Laurent' # 'Alliander',   'Laurent' ,   'tensor', 'hp' , 'sequential' , 'hp-tensor',       "bfsw","nr",'fdxb','gs','dc'
+	Param.PowerFlowMethod='Laurent' # 'Alliander',   'Laurent' ,       "bfsw","nr",'fdxb','gs','dc'
 	
 	Param.Directory_name=Directory_name
 	##chose the grid
@@ -70,10 +69,6 @@ for sc in Config_scenario:
 		System_Data_Nodes = pd.read_csv(os.path.join(Directory_name,'data/grid_data/'+Param.TestSystem+'.csv'))
 		System_Data_Lines = pd.read_csv(os.path.join(Directory_name,'data/grid_data/'+Param.TestSystemLines+'.csv'))
 		Param.network,Param.sysData=create_Alliander_net(System_Data_Lines, System_Data_Nodes,Param.Vbase)	
-	elif Param.PowerFlowMethod in ('tensor', 'hp' , 'sequential' ,'hp-tensor'):
-		Param.profile_info=1
-		from tensorpowerflow import GridTensor
-		Param.network = GridTensor(node_file_path=os.path.join(Directory_name,"data/grid_data/"+Param.TestSystem+".csv"),lines_file_path=os.path.join(Directory_name,"data/grid_data/"+Param.TestSystemLines+".csv"),gpu_mode=False,v_base=Param.Vbase)
 	else:
 		print('The power flow method is not defined!')
 		print('Choose one of the following methods: "Laurent", "Alliander", "tensor", "hp" , "sequential" , "hp-tensor", "bfsw","nr","fdxb","gs","dc"')
